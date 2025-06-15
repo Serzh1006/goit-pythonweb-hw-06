@@ -4,14 +4,14 @@ from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 DATABASE_URL = "postgresql://postgres:111111@localhost:5432/school_db"
 
 engine = create_engine(DATABASE_URL, echo=True)
-session = sessionmaker(bind=engine)
-connection = session()
+session_ = sessionmaker(bind=engine)
+connection = session_()
 Base = declarative_base()
 
 
 class Group(Base):
     __tablename__ = "groups"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False, unique=True)
 
     students = relationship("Student", back_populates="group")
@@ -19,7 +19,7 @@ class Group(Base):
 
 class Student(Base):
     __tablename__ = "students"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     full_name = Column(String, nullable=False)
     group_id = Column(Integer, ForeignKey("groups.id"), nullable=False)
 
@@ -29,7 +29,7 @@ class Student(Base):
 
 class Teacher(Base):
     __tablename__ = "teachers"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     full_name = Column(String, nullable=False)
 
     subjects = relationship("Subject", back_populates="teacher")
@@ -37,7 +37,7 @@ class Teacher(Base):
 
 class Subject(Base):
     __tablename__ = "subjects"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     teacher_id = Column(Integer, ForeignKey("teachers.id"), nullable=False)
 
@@ -47,7 +47,7 @@ class Subject(Base):
 
 class Grade(Base):
     __tablename__ = "grades"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
     grade = Column(Integer, nullable=False)
